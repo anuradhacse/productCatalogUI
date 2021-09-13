@@ -1,4 +1,3 @@
-import './App.css';
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
