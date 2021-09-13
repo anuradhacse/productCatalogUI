@@ -10,6 +10,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import {Grid} from '@material-ui/core';
 import NavBar from './navbar';
+import productApi from "../api/productApi";
 
 
 const columns = [
@@ -54,13 +55,9 @@ function App() {
   },[]);
 
   const getProductsList = async ()=>{
-    const response = await fetch("http://localhost:8080/products/pricing/list", {
-      method: "GET",
-      headers: {"Content-Type": "application/json"}
-    });
-    const data = await response.json();
+    const response = await productApi.get("products/pricing/list");
     var rows = [];
-    data.map(({name, units, price})=>{
+    response.data.map(({name, units, price})=>{
       rows.push({name, units, price});
     });
     setProductList(rows);

@@ -5,6 +5,7 @@ import {Select, FormControl, Grid, MenuItem, Button} from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import NavBar from './navbar';
+import productApi from "../api/productApi";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,13 +51,9 @@ function App() {
     }, []);
 
     const getProducts = async () => {
-        const response = await fetch("http://localhost:8080/products/", {
-            method: "GET",
-            headers: {"Content-Type": "application/json"}
-        });
-        const data = await response.json();
+        const response = await productApi.get("products");
         var rows = [];
-        data.map(product => {
+        response.data.map(product => {
             console.log(product);
             rows.push(product);
         });
@@ -76,17 +73,12 @@ function App() {
     }
 
     const calculatePrice = async (event) => {
-        const response = await fetch("http://localhost:8080/products/pricing/calculate", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                "productId": productId,
-                "quantity": quantity,
-                "quantityType": type
-            })
+        const response = await productApi.post("products/pricing/calculate", {
+            productId,
+            quantity,
+            "quantityType": type
         });
-        const data = await response.json();
-        setPrice(data.price);
+        setPrice(response.data.price);
     }
 
 
